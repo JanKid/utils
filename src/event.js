@@ -54,13 +54,24 @@ export function removeEvent(el, event, fn) {
 }
 /**
  * 添加元素一次事件的简单封装
- * @method addEvent
+ * @method onceEvent
  * @param { el ,event, fn, capture}
  */
-export function onceEvent(el, event, fn) {
+export function onceEvent(el, event, fn, capture) {
     let listen = (e) => {
         fn.apply(el, arguments)
-        removeEvent(el, event, listen)
+        removeEvent(el, event, listen, capture)
     }
     addEvent(el, event, listen)
+}
+/**
+ * 取消事件的简单封装
+ * @method cancelEvent
+ * @param { event}
+ */
+export function cancelEvent(event) {
+    event = event || window.event
+    if (e.preventDefault) e.preventDefault()
+    if (e.returnValue) e.returnValue = false
+    return false
 }

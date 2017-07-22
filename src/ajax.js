@@ -1,5 +1,7 @@
 /*
  author: Jankid
+ email: gaojianlin.1989@gmail.com
+ date: 2017//07/21
 */
 /**
  * http请求简单封装
@@ -114,7 +116,7 @@ function compilerUrl(url, params) {
         paramsArray = arr[1].split('&')
         paramsArray.forEach((item) => {
             let key = item[0]
-            let value = item[1] || ''
+            let value = decodeURIComponent(item[1]) || ''
             paramsObj[key] = value
         })
         paramsArray = []
@@ -125,7 +127,7 @@ function compilerUrl(url, params) {
     return url
 }
 
-// 设置xhr 头部形象
+// 设置xhr 头部信息
 function setHeaders(xhr, headers) {
     headers = headers || {}
     Object.keys(headers).forEach((key) => xhr.setRequestHeader(key, headers[key]))
