@@ -10,22 +10,15 @@
  * @param { el ,event, fn, capture}
  */
 export function addEvent(el, event, fn, capture = false) {
+    if (!(Array.isArray(el) || el.constructor === NodeList)) el = [el]
     if (el.addEventListener) {
-        if (el.length) {
-            el.forEach((item) => {
-                item.addEventListener(event, fn, capture)
-            })
-        } else {
-            el.addEventListener(event, fn, capture)
-        }
+        el.forEach((item) => {
+            item.addEventListener(event, fn, capture)
+        })
     } else {
-        if (el.length) {
-            el.forEach((item) => {
-                item.attachEvent(`on${event}`, fn)
-            })
-        } else {
-            el.attachEvent(`on${event}`, fn)
-        }
+        el.forEach((item) => {
+            item.attachEvent(`on${event}`, fn)
+        })
     }
 }
 /**
@@ -33,23 +26,16 @@ export function addEvent(el, event, fn, capture = false) {
  * @method removeEvent
  * @param { el ,event, fn }
  */
-export function removeEvent(el, event, fn) {
+export function removeEvent(el, event, fn, capture = false) {
+    if (!(Array.isArray(el) || el.constructor === NodeList)) el = [el]
     if (el.addEventListener) {
-        if (el.length) {
-            el.forEach((item) => {
-                item.removeEventListener(event, fn, capture)
-            })
-        } else {
-            el.removeEventListener(event, fn, capture)
-        }
+        el.forEach((item) => {
+            item.removeEventListener(event, fn, capture)
+        })
     } else {
-        if (el.length) {
-            el.forEach((item) => {
-                item.detachEvent(`on${event}`, fn)
-            })
-        } else {
-            el.detachEvent(`on${event}`, fn)
-        }
+        el.forEach((item) => {
+            item.detachEvent(`on${event}`, fn)
+        })
     }
 }
 /**
@@ -62,7 +48,7 @@ export function onceEvent(el, event, fn, capture) {
         fn.apply(el, arguments)
         removeEvent(el, event, listen, capture)
     }
-    addEvent(el, event, listen)
+    addEvent(el, event, listen, capture)
 }
 /**
  * 取消事件的简单封装

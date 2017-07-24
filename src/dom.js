@@ -8,7 +8,7 @@
  */
 export const dom = {
     $: function(selector) {
-        return document.querySelector(selector)
+        return document.querySelectorAll(selector)
     },
     id: function(id) {
         return document.getElementById(id)
@@ -26,14 +26,14 @@ export const dom = {
         return parent
     },
     append: function(el, children) {
-        if (!Array.isArray(children)) children = [children]
+        if (!(Array.isArray(children) || children.constructor === NodeList)) children = [children]
         for (let i = 0; i < children.length; i++) {
             el.appendChild(children[i])
         }
         return el
     },
     prepend: function(el, children) {
-        if (!Array.isArray(children)) children = [children]
+        if (!(Array.isArray(children) || children.constructor === NodeList)) children = [children]
         for (let i = children.length - 1; i >= 0; i--) {
             if (el.firstChild) {
                 el.insertBefore(children[i], parent.firstChild)
@@ -50,23 +50,19 @@ export const dom = {
         return el
     },
     addClass: function(el, className) {
-        if (typeof className === 'undefined') return this
+        if (typeof className === 'undefined') return el
         var classes = className.split(' ')
+        if (!(Array.isArray(el) || el.constructor === NodeList)) el = [el]
         for (var i = 0; i < classes.length; i++) {
-            if (el.length) {
-                for (var j = 0; j < el.length; j++) {
-                    el[j].classList.add(classes[i]);
-                }
-            } else {
-                el.classList.add(classes[i])
+            for (var j = 0; j < el.length; j++) {
+                el[j].classList.add(classes[i]);
             }
-
         }
         return el
     },
     removeClass: function(el, className) {
         var classes = className.split(' ')
-        if (!Array.isArray(el)) el = [el]
+        if (!(Array.isArray(el) || el.constructor === NodeList)) el = [el]
         for (var i = 0; i < classes.length; i++) {
             for (var j = 0; j < el.length; j++) {
                 el[j].classList.remove(classes[i])
@@ -95,7 +91,7 @@ export const dom = {
     },
     css: function(el, props, value) {
         var i;
-        if (!Array.isArray(el)) el = [el]
+        if (!(Array.isArray(el) || el.constructor === NodeList)) el = [el]
         if (arguments.length === 1) {
             if (typeof props === 'string') {
                 if (el[0]) return window.getComputedStyle(el[0], null).getPropertyValue(props);
@@ -118,7 +114,7 @@ export const dom = {
         return el
     },
     attr: function(el, attrs, value) {
-        if (!Array.isArray(el)) el = [el]
+        if (!(Array.isArray(el) || el.constructor === NodeList)) el = [el]
         if (arguments.length === 1 && typeof attrs === 'string') {
             // Get attr
             if (el[0]) return el[0].getAttribute(attrs);
