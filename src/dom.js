@@ -17,7 +17,6 @@ export const dom = {
         if (!parentClass) return el.parentNode
         let parent = el.parentNode
         let parentCls = el.className
-        console.log(parentCls)
         while (parentCls.indexOf(parentClass) < 0) {
             parent = parent.parentNode
             parentCls = parent.className || ''
@@ -138,10 +137,10 @@ export const dom = {
     },
     index: function(el) {
         if (el[0]) {
-            var child = el[0];
+            var children = el[0];
             var i = 0;
-            while ((child = child.previousSibling) !== null) {
-                if (child.nodeType === 1) i++;
+            while ((children = children.previousSibling) !== null) {
+                if (children.nodeType === 1) i++;
             }
             return i;
         } else return undefined;

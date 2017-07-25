@@ -1,3 +1,9 @@
+/*
+ * @author: Jankid
+ * @email: gaojianlin.1989@gmail.com
+ * @date: 2017//07/21
+ */
+
 /**
  * 格式化日期
  * @method formatDate
@@ -68,7 +74,7 @@ export function getDayView(date) {
     let dayValue = date.valueOf()
     let totalDays = 42 // 日视图总数 7 x 6 
     let dayOne = (new Date(dayValue)) // 用于保存当前月的1号日期
-    let lastDate = new Date(date.getFullYear(), date.getMonth() - 1, 1) // 保存上个月1号
+    let lastDate = new Date(dayValue) // 保存上个月日期
     let lastDays = getDays(lastDate) // 上个月的总天数
 
     let days = getDays(date) // 当前月的总天数
@@ -80,6 +86,9 @@ export function getDayView(date) {
     let nextMonth = [] // 保存下月日期
     let curMonth = [] // 保存当月日期
 
+    // 设置上月日期
+    lastDate.setDate(0)
+        // 设置当前日期为1号
     dayOne.setDate(1)
     dayWeek = dayOne.getDay() || 7
     nextDays -= dayWeek
