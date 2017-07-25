@@ -11,6 +11,7 @@ yarn run dev
 
 ```
 ### 目录结构
+```
 ├── README.md
 ├── dist // rollup 打包好的可访问文件
 │   └── utils.js
@@ -25,7 +26,19 @@ yarn run dev
 │   └── regex.html
 ├── src
 │   ├── ajax.js
+│   ├── animate.js
+│   ├── bom.js
+│   ├── date.js
+│   ├── dom.js
+│   ├── event.js
+│   ├── regex.js
+│   ├── rem.js
+│   └── index.js
 ├── .babelrc
-└── tree.md
-
+├── .gitignore
+├── app.js  //简单静态服务器
+├── package.json
+├── rollup.config.js
+└── yarn.lock
+```
 
