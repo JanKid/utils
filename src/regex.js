@@ -71,7 +71,7 @@ export function isMobile(value) {
 
 /**
  * 判断是否手机
- * @method isMobile
+ * @method isQQ
  * @param {Any} 判断对象
  * @return {Boolean} 真假值
  */
@@ -83,7 +83,7 @@ export function isQQ(value) {
 
 /**
  * 判断是否为身份证号码
- * @method isChinese
+ * @method isIdentify
  * @param {Any} 判断对象
  * @return {Boolean} 真假值
  */
