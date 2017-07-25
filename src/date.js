@@ -88,6 +88,7 @@ export function getDayView(date) {
 
     // 设置上月日期
     lastDate.setDate(0)
+    lastDays = getDays(lastDate)
         // 设置当前日期为1号
     dayOne.setDate(1)
     dayWeek = dayOne.getDay() || 7
