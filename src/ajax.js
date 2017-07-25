@@ -59,7 +59,7 @@ export function upload(options = {}) {
 
     if (xhr.upload) {
         xhr.upload.onprogress = function(e) {
-            if (e.total > 0) {
+            if (e.lengthComputable && e.total > 0) {
                 e.percent = e.loaded / e.total * 100
             }
             options.onProgress(e)
