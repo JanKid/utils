@@ -33,7 +33,7 @@ yarn run dev
 │   ├── event.js
 │   ├── regex.js
 │   ├── rem.js
-│   └── index.js
+│   └── index.js  // rollup 打包入口
 ├── .babelrc
 ├── .gitignore
 ├── app.js  //简单静态服务器
