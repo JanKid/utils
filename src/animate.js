@@ -33,19 +33,19 @@ function nowtime() {
     return Date.now ? Date.now() : (new Date()).getTime();
 }
 // 对 requestAnimationFrame 进行 polyfill：
-if (typeof global.requestAnimationFrame === 'undefined') {
-    global.requestAnimationFrame = function(callback) {
-        return setTimeout(function() { //polyfill
-            callback.call(this, nowtime());
-        }, 1000 / 60);
-    }
-    global.cancelAnimationFrame = function(qId) {
-        return clearTimeout(qId);
-    }
-}
+// if (typeof global.requestAnimationFrame === 'undefined') {
+//     global.requestAnimationFrame = function(callback) {
+//         return setTimeout(function() { //polyfill
+//             callback.call(this, nowtime());
+//         }, 1000 / 60);
+//     }
+//     global.cancelAnimationFrame = function(qId) {
+//         return clearTimeout(qId);
+//     }
+// }
 
 // animator 具体实现
-function Animator(duration, update, easing) {
+export function Animator(duration, update, easing) {
     this.duration = duration;
     this.update = update;
     this.easing = easing;
@@ -89,4 +89,3 @@ Animator.prototype = {
         return new Animator(this.duration, this.update, easing);
     }
 };
-export const Animator

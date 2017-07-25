@@ -6,10 +6,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>http 请求测试</title>
+    <script src="./static/utils.js"></script>
 </head>
 
 <body>
+    <h1>测试请求内容</h1>
+    <button id="get">get 请求</button>
+    <button id="post">post 请求</button>
+    <button id="jsonp">jsonp  请求</button>
+    <label for="">上传测试：</label>
+    <input id="upload" type="file" name="filename" multiple='mutiple'>
+    <script>
+        utils.event.addEvent(get, "click", function(e) {
+            utils.ajax.get('/ajax/get', {
+                test: 6
+            }).then(res => {
+                console.log(res)
+            })
+        })
 
+        utils.event.addEvent(post, "click", function(e) {
+            utils.ajax.post('/ajax/post', {
+                test: 6
+            }).then(res => {
+                console.log(res)
+            })
+        })
+
+        utils.event.addEvent(jsonp, "click", function(e) {
+            utils.ajax.jsonp('https://api.asilu.com/phone/', {
+                phone: '13666666666'
+            }).then(res => {
+                console.log(res)
+            })
+        })
+
+        function postUpload(file) {
+            utils.ajax.upload({
+                action: "/ajax/upload",
+                filename: 'filename',
+                file: file,
+                onProgress: function(e) {
+                    console.log('progress', e)
+                },
+                onSuccess: function(e) {
+                    console.log('success', e)
+                },
+                onError: function(e) {
+                    console.log('error', e)
+                }
+            })
+        }
+
+        function uploadFiles(files) {
+            let postfile = Array.prototype.slice.call(files)
+            if (!postfile.length) return
+            postfile.forEach(rawFile => {
+                postUpload(rawFile)
+            })
+        }
+        utils.event.addEvent(upload, "change", function(e) {
+            console.log(e)
+            var target = e.target
+            uploadFiles(target.files)
+        })
+    </script>
 </body>
 
 </html>

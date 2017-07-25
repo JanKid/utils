@@ -11,7 +11,7 @@
  */
 export function addEvent(el, event, fn, capture = false) {
     if (!(Array.isArray(el) || el.constructor === NodeList)) el = [el]
-    if (el.addEventListener) {
+    if (document.addEventListener) {
         el.forEach((item) => {
             item.addEventListener(event, fn, capture)
         })
@@ -28,7 +28,7 @@ export function addEvent(el, event, fn, capture = false) {
  */
 export function removeEvent(el, event, fn, capture = false) {
     if (!(Array.isArray(el) || el.constructor === NodeList)) el = [el]
-    if (el.addEventListener) {
+    if (document.addEventListener) {
         el.forEach((item) => {
             item.removeEventListener(event, fn, capture)
         })

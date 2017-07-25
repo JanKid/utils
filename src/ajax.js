@@ -12,10 +12,10 @@
 export function http(method, url, params = {}, headers = {}) {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest()
-        setHeaders(xhr, Object.assign({ 'X-Requested-With': 'XMLHttpRequest' }, headers))
         xhr.open(method, url)
+        setHeaders(xhr, Object.assign({ 'X-Requested-With': 'XMLHttpRequest' }, headers))
         xhr.withCredentials = true
-        xhr.onload = (e) => resolve(getBody(xhr), e, xhr)
+        xhr.onload = (e) => resolve(getResponseBody(xhr), e, xhr)
         xhr.onerror = (e) => reject(xhr, e)
         xhr.send(params)
     })
@@ -45,16 +45,16 @@ export function post(url, params) {
  * @param { options :{ action,data,filename,file,headers,onProgress,onSuccess,onError ... }}
  * @return {Promise}
  */
-export function upload(options) {
+export function upload(options = {}) {
     if (typeof XMLHttpRequest === 'undefined') {
         return
     }
     let xhr = new XMLHttpRequest()
-    let defaultOptions = { onProgress: (e) => {}, onError: (e) => {}, onSuccess: (res) => {} }
-    let [action, data, headers, filename, file] = Object.assign(defaultOptions, options)
+    let defaultOptions = { data: {}, filename: 'filename', onProgress: (e) => {}, onError: (e) => {}, onSuccess: (res) => {} }
+    let { action, data, headers, filename, file } = Object.assign(defaultOptions, options)
+    let formData = new FormData()
 
-    let formDate = new FormData()
-    Object.keys(data).forEach((key) => formDate.append(key, data[key]))
+    Object.keys(data).forEach((key) => formData.append(key, data[key]))
     formData.append(filename, file)
 
     if (xhr.upload) {
@@ -78,7 +78,7 @@ export function upload(options) {
 
     xhr.open('post', action, true)
     setHeaders(xhr, headers)
-    xhr.send(formDate)
+    xhr.send(formData)
     return xhr
 }
 /**
@@ -108,12 +108,12 @@ export function jsonp(url, params) {
 }
 
 // complier get url
-function compilerUrl(url, params) {
+function compilerUrl(url, params = {}) {
     let urlArr = url.split('?'),
         paramsArray = [],
         paramsObj = {}
-    if (arr.length > 1) {
-        paramsArray = arr[1].split('&')
+    if (urlArr.length > 1) {
+        paramsArray = urlArr[1].split('&')
         paramsArray.forEach((item) => {
             let key = item[0]
             let value = decodeURIComponent(item[1]) || ''
@@ -123,7 +123,7 @@ function compilerUrl(url, params) {
     }
     Object.assign(paramsObj, params)
     Object.keys(paramsObj).forEach((key) => paramsArray.push(key + '=' + paramsObj[key]))
-    url = paramsArray.length ? urlArr[0] : urlArr[0] + '?' + paramsArray.join('&')
+    url = paramsArray.length ? urlArr[0] + '?' + paramsArray.join('&') : urlArr[0]
     return url
 }
 
