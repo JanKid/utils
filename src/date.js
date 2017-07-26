@@ -65,6 +65,48 @@ export function getDays(day) {
 }
 
 /**
+ * 计算当前日期的上月1号
+ * @method prevMonth
+ * @param { day : Date }
+ * @return [ day :Date]
+ */
+export function prevMonth(day) {
+    let date = day instanceof Date ? day : new Date(day)
+    date = new Date(date.valueOf())
+    date.setDate(0)
+    date.setDate(1)
+    return date
+}
+
+/**
+ * 比较两个日期是否相等
+ * @method isEqualDate
+ * @param { date1,date2 : Date }
+ * @return Boolean
+ */
+export function isEqualDate(date1, date2, fmt = 'yyyy/MM/dd') {
+    let d1 = date1 instanceof Date ? date1 : new Date(date1)
+    let d2 = date2 instanceof Date ? date2 : new Date(date2)
+    d1 = formatDate(date1, fmt);
+    d2 = formatDate(date2, fmt)
+    return d1 === d2
+}
+
+/**
+ * 计算当前日期的下月1号
+ * @method nextMonth
+ * @param { day : Date }
+ * @return [ day :Date]
+ */
+export function nextMonth(day) {
+    let date = day instanceof Date ? day : new Date(day)
+    date = new Date(date.valueOf())
+    date.setMonth(date.getMonth() + 1)
+    date.setDate(1)
+    return date
+}
+
+/**
  * 计算当前日期的当月的日视图
  * @method getDayView
  * @param { day : Date }

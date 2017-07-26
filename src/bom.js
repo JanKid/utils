@@ -97,3 +97,17 @@ export function removeLocalItem(sKey) {
 export function clearLocal() {
     localStorage.clear()
 }
+
+export function formatSize(bytes) {
+    var bt = parseInt(bytes)
+    var result
+    if (bt === 0) {
+        result = '0B'
+    } else {
+        let k = 1024
+        let sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+        let i = Math.floor(Math.log(bt) / Math.log(k))
+        result = (bt / Math.pow(k, i)).toFixed(2) + sizes[i]
+    }
+    return result
+}

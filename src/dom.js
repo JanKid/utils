@@ -6,12 +6,16 @@
 /*
  * document 的一些操作简单封装
  */
-export const dom = {
-    $: function(selector) {
-        return document.querySelectorAll(selector)
+export default {
+    $: function(selector, dom) {
+        dom = dom || document
+        return dom.querySelectorAll(selector)
     },
     id: function(id) {
         return document.getElementById(id)
+    },
+    create(tag) {
+        return document.createElement(tag)
     },
     parent: function(el, parentClass) {
         if (!parentClass) return el.parentNode
@@ -26,8 +30,12 @@ export const dom = {
     },
     append: function(el, children) {
         if (!(Array.isArray(children) || children.constructor === NodeList)) children = [children]
-        for (let i = 0; i < children.length; i++) {
-            el.appendChild(children[i])
+        if (!(Array.isArray(el) || el.constructor === NodeList)) el = [el]
+        for (let j = 0; j < el.length; j++) {
+            for (let i = 0; i < children.length; i++) {
+                let item = el[j]
+                item.appendChild(children[i])
+            }
         }
         return el
     },
@@ -42,7 +50,7 @@ export const dom = {
         }
         return el
     },
-    removeChildren: function(el) {
+    empty: function(el) {
         while (el.hasChildNodes()) {
             el.removeChild(el.lastChild)
         }
@@ -113,15 +121,16 @@ export const dom = {
         return el
     },
     attr: function(el, attrs, value) {
+        if (!el) return
         if (!(Array.isArray(el) || el.constructor === NodeList)) el = [el]
-        if (arguments.length === 1 && typeof attrs === 'string') {
+        if (arguments.length === 2 && typeof attrs === 'string') {
             // Get attr
             if (el[0]) return el[0].getAttribute(attrs);
             else return undefined;
         } else {
             // Set attrs
             for (var i = 0; i < el.length; i++) {
-                if (arguments.length === 2) {
+                if (arguments.length === 3) {
                     // String
                     el[i].setAttribute(attrs, value);
                 } else {
@@ -154,5 +163,25 @@ export const dom = {
             dom.append(node, children)
         }
         return node
+    },
+    // 模版引擎，来源于某大神：https://icyfish.me/2017/07/11/implement-js-template-engine
+    templateEngine: function(html, options) {
+        var re = /<#([^#>]+)?#>/g, //  获取<# #> 里面的内容,原来是%号的，由于express渲染模版用到关键符号%，所以用#代替%
+            reExp = /(^( )?(if|for|else|switch|case|break|{|}))(.*)?/g,
+            code = 'var r=[];\n',
+            cursor = 0,
+            match;
+        var add = function(line, js) {
+            js ? (code += line.match(reExp) ? line + '\n' : 'r.push(' + line + ');\n') :
+                (code += line != '' ? 'r.push("' + line.replace(/"/g, '\\"') + '");\n' : '');
+            return add;
+        }
+        while (match = re.exec(html)) {
+            add(html.slice(cursor, match.index))(match[1], true);
+            cursor = match.index + match[0].length;
+        }
+        add(html.substr(cursor, html.length - cursor));
+        code += 'return r.join("");';
+        return new Function(code.replace(/[\r\t\n]/g, '')).apply(options);
     }
 }

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>测试日期相关功能</title>
+    <script src="./static/utils.js"></script>
+    <style>
+        .calendar table {
+            text-align: right;
+        }
+        
+        .calendar span {
+            display: inline-block;
+            padding: 5px;
+        }
+        
+        .calendar .cur-month {
+            width: 105px;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .calendar tbody td {
+            color: #ccc;
+        }
+        
+        .calendar tbody .cur {
+            color: black;
+        }
+        
+        .calendar tbody .sel {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calendar">
+        <span class="prev">《 </span>
+        <span class="cur-month"></span>
+        <span class="next"> 》</span>
+    </div>
+    <script>
+        var now = new Date(),
+            dom = document;
+        var cl = utils.dom.$('.calendar')[0];
+        utils.dom.append(cl, utils.dom.strConvetDom('<table ></table>'))
+        createDayView(now)
+        bindEvent()
+
+        function createDayView(day) {
+            var view = utils.date.getDayView(day);
+            var week = '日一二三四五六'.split('')
+            var now = new Date()
+            var tpHead = "<thead><tr> <#for(let i=0;i<this.week.length;i++){#> <th> <#this.week[i]#> </th> <#}#> </tr></thead>";
+            var head = utils.dom.templateEngine(tpHead, {
+                week
+            })
+            var curEl = utils.dom.$(".cur-month")
+            var body = "<tbody>"
+            curEl[0].innerText = utils.date.formatDate(day, 'yyyy/MM')
+            utils.dom.attr(curEl, 'cur-date', day.valueOf())
+            for (let i = 0, k = 0; i < 6; i++) {
+                body += "<tr>"
+                for (let j = 0; j < 7; j++, k++) {
+                    let td = "<td class='cur'>"
+                    if (k < view.prevMonth.length || k >= (view.prevMonth.length + view.curMonth.length)) {
+                        td = "<td>"
+                    }
+                    let cur = k - view.prevMonth.length
+                    if (cur > 0 && cur < view.curMonth.length) {
+                        let q = utils.date.isEqualDate(now, view.curMonth[cur]) // 判断日期是否相等
+                        if (q) {
+                            td = "<td class='sel'>"
+                        }
+                    }
+                    body += td
+                    body += view.dayView[k]
+                    body += "</td>"
+                }
+                body += "</tr>"
+            }
+            body += "</tbody>"
+            var tableEl = cl.querySelector("table")
+            utils.dom.empty(tableEl)
+            utils.dom.append(tableEl, utils.dom.strConvetDom(head))
+            utils.dom.append(tableEl, utils.dom.strConvetDom(body))
+
+        }
+
+        function bindEvent() {
+            let pervEl = utils.dom.$('.prev'),
+                nextEl = utils.dom.$('.next'),
+                curEl = utils.dom.$('.cur-month');
+            utils.event.addEvent(pervEl, 'click', function(e) {
+                let cd = utils.dom.attr(curEl, 'cur-date')
+                createDayView(utils.date.prevMonth(cd - 0))
+            })
+            utils.event.addEvent(nextEl, 'click', function(e) {
+                let cd = utils.dom.attr(curEl, 'cur-date')
+                createDayView(utils.date.nextMonth(cd - 0))
+            })
+        }
+    </script>
+</body>
+
+</html>

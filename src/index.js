@@ -4,6 +4,7 @@ import * as event from './event'
 import * as object from './object'
 import * as regex from './regex'
 import * as date from './date'
+import dom from './dom'
 
 export default {
     ajax,
@@ -11,5 +12,6 @@ export default {
     event,
     object,
     regex,
-    date
+    date,
+    dom
 }
