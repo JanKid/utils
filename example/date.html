@@ -62,11 +62,12 @@
             var curEl = utils.dom.$(".cur-month")
             var body = "<tbody>"
             curEl[0].innerText = utils.date.formatDate(day, 'yyyy/MM')
-            utils.dom.attr(curEl, 'cur-date', day.valueOf())
+            utils.dom.attr(curEl, 'cur-date', day.valueOf()) // 保存当前视图月份信息
+                // 以 6 x 7 表格显示日期信息
             for (let i = 0, k = 0; i < 6; i++) {
                 body += "<tr>"
                 for (let j = 0; j < 7; j++, k++) {
-                    let td = "<td class='cur'>"
+                    let td = "<td class='cur'>" // 当月日期
                     if (k < view.prevMonth.length || k >= (view.prevMonth.length + view.curMonth.length)) {
                         td = "<td>"
                     }
@@ -74,7 +75,7 @@
                     if (cur > 0 && cur < view.curMonth.length) {
                         let q = utils.date.isEqualDate(now, view.curMonth[cur]) // 判断日期是否相等
                         if (q) {
-                            td = "<td class='sel'>"
+                            td = "<td class='sel'>" // 今日日期
                         }
                     }
                     body += td
