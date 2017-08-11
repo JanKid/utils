@@ -37,7 +37,11 @@ export function get(url, params) {
  * @return {Promise}
  */
 export function post(url, params) {
-    return http('post', url, params, { 'Content-Type': 'application/x-www-form-urlencoded;' })
+    var paramsArr= []
+    Object.keys(params).forEach(key => {
+        paramsArr.push(`${key}=${params[key]}`)
+    })
+    return http('post', url, paramsArr.join('&'), { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' })
 }
 /**
  * 上传简单封装

@@ -43,7 +43,11 @@ function get(url, params) {
  * @return {Promise}
  */
 function post(url, params) {
-    return http('post', url, params, { 'Content-Type': 'application/x-www-form-urlencoded;' })
+    var paramsArr= [];
+    Object.keys(params).forEach(key => {
+        paramsArr.push(`${key}=${params[key]}`);
+    });
+    return http('post', url, paramsArr.join('&'), { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' })
 }
 /**
  * 上传简单封装
@@ -594,11 +598,11 @@ function prevMonth(day) {
  * @param { date1,date2 : Date }
  * @return Boolean
  */
-function isEqualDate(date1, date2) {
+function isEqualDate(date1, date2, fmt = 'yyyy/MM/dd') {
     let d1 = date1 instanceof Date ? date1 : new Date(date1);
     let d2 = date2 instanceof Date ? date2 : new Date(date2);
-    d1 = formatDate(date1, 'yyyy/MM/dd');
-    d2 = formatDate(date2, 'yyyy/MM/dd');
+    d1 = formatDate(date1, fmt);
+    d2 = formatDate(date2, fmt);
     return d1 === d2
 }
 

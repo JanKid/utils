@@ -27,7 +27,8 @@
 
         utils.event.addEvent(post, "click", function(e) {
             utils.ajax.post('/ajax/post', {
-                test: 6
+                test: 6,
+                hetae: 8
             }).then(res => {
                 console.log(res)
             })
