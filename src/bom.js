@@ -22,6 +22,32 @@ export function getBrowser() {
         (s = ua.match(/MicroMessenger/i)) ? brower.wx = s[1] : 0
     return brower
 }
+
+/*
+*  判断浏览器是PC端还是手机端
+* 
+*/
+export function isPcBrowser () {
+    let p = navigator.platform
+    let win = p.indexOf("Win") === 0 // pc端window系统
+    let mac = p.indexOf("Mac") === 0 // pc端Mac系统
+    let x11 = (p=="X11")||(p.indexOf('Linux') === 0) //pc端Linux或者unix系统
+
+    return win || mac || x11
+}
+/*
+*  判断浏览器是手机端还是PC端
+* 
+*/
+export function isMobieBrowser () {
+    let agent = navigator.userAgent
+    let android = /android/i.test(agent)
+    let iphone = /(iPhone|iPad|iPod|iOS)/i.test(agent)
+    let weixin =/MicroMessenger/i.test(agent)
+
+    return android|| iphone|| weixin
+}
+
 /**  Cookie 相关操作  */
 /**
  * 获取对应cookie
