@@ -65,6 +65,18 @@ export function getDays(day) {
 }
 
 /**
+ * 计算该年，这一个月的天数
+ * @method getMonthDays
+ * @param { year : Number,month:Number }
+ * @return [ days :Number]
+ */
+export function getMonthDays(year, month) {
+    var date = new Date(year, month)
+    date.setDate(0)
+    return date.getDate()
+}
+
+/**
  * 计算当前日期的上月1号
  * @method prevMonth
  * @param { day : Date }
