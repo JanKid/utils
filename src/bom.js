@@ -14,7 +14,9 @@ export function getBrowser() {
     let brower = {}
     let ua = navigator.userAgent.toLowerCase()
     let s;
-    (s = ua.match(/msie ([\d.]+)/)) ? brower.ie = s[1]:
+    (s = ua.match(/edge\/([\d.]+)/)) ? brower.edge = s[1]:
+        (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? brower.ie = s[1] :
+        (s = ua.match(/msie ([\d.]+)/)) ? brower.ie = s[1]:
         (s = ua.match(/firefox\/([\d.]+)/)) ? brower.ff = s[1] :
         (s = ua.match(/chrome\/([\d.]+)/)) ? brower.ch = s[1] :
         (s = ua.match(/opera.([\d.]+)/)) ? brower.o = s[1] :
